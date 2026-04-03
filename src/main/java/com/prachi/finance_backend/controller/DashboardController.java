@@ -18,7 +18,11 @@ public class DashboardController {
 
     @GetMapping("/summary")
     public Map<String, Double> getSummary(
-            @RequestHeader("role") String role) {
+            @RequestHeader(value = "role", required = false) String role) {
+
+        if (role == null) {
+            role = "ADMIN"; // default for demo
+        }
 
         if (!(role.equals("ADMIN") || role.equals("ANALYST"))) {
             throw new UnauthorizedException("Access Denied");
@@ -32,9 +36,14 @@ public class DashboardController {
         return response;
     }
 
+
     @GetMapping("/category")
     public Map<String, Double> getCategoryData(
-            @RequestHeader("role") String role) {
+            @RequestHeader(value = "role", required = false) String role) {
+
+        if (role == null) {
+            role = "ADMIN";
+        }
 
         if (!(role.equals("ADMIN") || role.equals("ANALYST"))) {
             throw new UnauthorizedException("Access Denied");
@@ -45,7 +54,11 @@ public class DashboardController {
 
     @GetMapping("/trends")
     public Map<String, Map<String, Double>> getTrends(
-            @RequestHeader("role") String role) {
+            @RequestHeader(value = "role", required = false) String role) {
+
+        if (role == null) {
+            role = "ADMIN";
+        }
 
         if (!(role.equals("ADMIN") || role.equals("ANALYST"))) {
             throw new UnauthorizedException("Access Denied");

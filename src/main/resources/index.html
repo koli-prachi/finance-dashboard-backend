@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Finance Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Cards */
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 220px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .card p {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Charts Layout */
+        .charts {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .chart-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Finance Dashboard</h1>
+
+<!-- CARDS -->
+<div class="cards">
+    <div class="card">
+        <h3>Total Income</h3>
+        <p id="income">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Expense</h3>
+        <p id="expense">0</p>
+    </div>
+
+    <div class="card">
+        <h3>Net Balance</h3>
+        <p id="balance">0</p>
+    </div>
+</div>
+
+<!-- CHARTS -->
+<div class="charts">
+
+    <!-- PIE CHART -->
+    <div class="chart-box">
+        <h3 style="text-align:center;">Category Distribution</h3>
+        <canvas id="pieChart"></canvas>
+    </div>
+
+    <!-- LINE CHART -->
+    <div class="chart-box">
+        <h3 style="text-align:center;">Monthly Trends</h3>
+        <canvas id="trendChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+
+    const BASE_URL = "http://localhost:9090";
+
+    const headers = {
+        "role": "ADMIN"
+    };
+
+    // 🔹 SUMMARY
+    fetch(`${BASE_URL}/dashboard/summary`, { headers })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("income").innerText = data.totalIncome || 0;
+            document.getElementById("expense").innerText = data.totalExpense || 0;
+            document.getElementById("balance").innerText = data.netBalance || 0;
+        });
+
+    // 🔹 CATEGORY PIE CHART
+    fetch(`${BASE_URL}/dashboard/category`, { headers })
+        .then(res => res.json())
+        .then(data => {
+
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+
+            new Chart(document.getElementById("pieChart"), {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values
+                    }]
+                }
+            });
+        });
+
+    // 🔹 TRENDS LINE CHART
+    fetch(`${BASE_URL}/dashboard/trends`, { headers })
+        .then(res => res.json())
+        .then(data => {
+
+            const labels = Object.keys(data);
+
+            const income = labels.map(m => data[m].income || 0);
+            const expense = labels.map(m => data[m].expense || 0);
+
+            new Chart(document.getElementById("trendChart"), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Income",
+                            data: income,
+                            borderWidth: 2
+                        },
+                        {
+                            label: "Expense",
+                            data: expense,
+                            borderWidth: 2
+                        }
+                    ]
+                }
+            });
+        });
+
+</script>
+
+</body>
+</html>

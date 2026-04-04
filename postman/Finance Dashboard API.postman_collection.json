@@ -1,0 +1,347 @@
+{
+  "info": {
+    "_postman_id": "b4d6571a-ac2d-4962-b949-c2fee3c90b44",
+    "name": "Finance Dashboard API",
+    "description": "This collection contains APIs for a Finance Dashboard system built using Spring Boot.\n\nIt includes:\n\n- User and role management\n    \n- Financial record CRUD operations\n    \n- Filtering and analytics APIs\n    \n- Dashboard summary endpoints\n    \n\nRole-based access control is implemented using request headers (ADMIN, ANALYST, VIEWER).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "38070916"
+  },
+  "item": [
+    {
+      "name": "User APIs",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Prachi\",\r\n  \"email\": \"prachi@gmail.com\",\r\n  \"role\": \"ADMIN\",\r\n  \"active\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9090/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Creates a new user in the system with a specific role and active status.  \nThis is used to manage access control for different types of users such as ADMIN, ANALYST, and VIEWER."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "role",
+                "value": "ADMIN",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 5000,\r\n  \"type\": \"EXPENSE\",\r\n  \"category\": \"Food\",\r\n  \"date\": \"2026-04-03\",\r\n  \"note\": \"Lunch\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:9090/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Retrieves all users along with their roles and active status.  \nUsed for managing user access and monitoring system users."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"role\": \"ADMIN\",\r\n  \"active\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9090/users/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "users",
+                "1"
+              ]
+            },
+            "description": "Updates user details such as role and active status.  \nAllows dynamic modification of user permissions."
+          },
+          "response": []
+        }
+      ],
+      "description": "These APIs manage users and their roles within the system.\n\nThey allow creation, retrieval, and updating of users, including role assignment and activation status."
+    },
+    {
+      "name": "Financial Records",
+      "item": [
+        {
+          "name": "Create Record",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "role",
+                "value": "ADMIN",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 5000,\r\n  \"type\": \"EXPENSE\",\r\n  \"category\": \"Food\",\r\n  \"date\": \"2026-04-03\",\r\n  \"note\": \"Lunch\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9090/records",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "records"
+              ]
+            },
+            "description": "Creates a new financial record such as income or expense.  \nAccessible only by ADMIN users. Each record includes amount, type, category, date, and optional notes."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Record",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "role",
+                "value": "ADMIN",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 7000,\r\n  \"type\": \"EXPENSE\",\r\n  \"category\": \"Shopping\",\r\n  \"date\": \"2026-04-03\",\r\n  \"note\": \"Updated record\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9090/records/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "records",
+                "1"
+              ]
+            },
+            "description": "Updates an existing financial record.  \nAllows modification of amount, type, category, date, and notes. Restricted to ADMIN users."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Record",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "role",
+                "value": "ADMIN",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9090/records/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "records",
+                "1"
+              ]
+            },
+            "description": "Deletes a financial record from the system.  \nThis operation is restricted to ADMIN users to maintain data integrity."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Records",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "role",
+                "value": "ADMIN",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"amount\": 5000,\r\n  \"type\": \"EXPENSE\",\r\n  \"category\": \"Food\",\r\n  \"date\": \"2026-04-03\",\r\n  \"note\": \"Lunch\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:9090/records",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "records"
+              ]
+            },
+            "description": "Retrieves all financial records stored in the system.  \nSupports filtering based on type, category, and date range for better data analysis."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Records",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9090/records?type=EXPENSE",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "records"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "EXPENSE"
+                }
+              ]
+            },
+            "description": "Retrieves financial records based on specific filters such as type, category, or date range.  \nEnables flexible querying for analysis and reporting."
+          },
+          "response": []
+        }
+      ],
+      "description": "These APIs handle financial records such as income and expenses.\n\nThey support CRUD operations and filtering based on type, category, and date."
+    },
+    {
+      "name": "Dashboard APIs",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "role",
+                "value": "ADMIN",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:9090/dashboard/summary",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "dashboard",
+                "summary"
+              ]
+            },
+            "description": "Returns overall financial summary including total income, total expense, and net balance.  \nUsed to provide a quick overview of financial status."
+          },
+          "response": []
+        },
+        {
+          "name": "Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9090/dashboard/category",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "dashboard",
+                "category"
+              ]
+            },
+            "description": "Returns aggregated financial data grouped by category.  \nHelps visualize how expenses or income are distributed across different categories."
+          },
+          "response": []
+        },
+        {
+          "name": "Trends",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:9090/dashboard/trends",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "9090",
+              "path": [
+                "dashboard",
+                "trends"
+              ]
+            },
+            "description": "Returns month-wise financial trends showing income and expense over time.  \nUseful for identifying patterns and analyzing financial performance."
+          },
+          "response": []
+        }
+      ],
+      "description": "These APIs provide aggregated financial insights for the dashboard.\n\nThey return summary data, category-wise breakdown, and monthly trends."
+    }
+  ]
+}

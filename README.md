@@ -198,3 +198,9 @@ This project demonstrates a complete backend system with real-world features suc
 It reflects strong understanding of backend development, API design, and system architecture.
 
 ---
+
+## 📄 API Documentation
+
+Postman collection is available here:
+
+[Download Collection](postman/finance-dashboard.postman_collection.json)
